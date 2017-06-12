@@ -2,7 +2,6 @@
 #include "Util/Types.h"
 #include <iostream>
 
-
 // This call back logic can be implemented into a Scene class
 // which must define these functions and then pass them to the 
 // Game instance to allow encapsulation of each scene/leve as it's 
@@ -24,6 +23,14 @@ void render() {
     // all rendering code should be defined in here.
     // e.g for d in Drawables do d.draw()
     std::cout << "RENDERING..." << std::endl;
+    
+    // How can I expose an ap to the callbacks to
+    // allow things such as:
+    //      clearScreen( 0xff78ff00 );
+    //
+    // There needs to be some kind of access to the display and other
+    // such things.
+
 }
 
 int main () {

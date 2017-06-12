@@ -14,10 +14,16 @@ public:
         render_p = cb;    
     };
     void start();
+    //virtual ~Game();
+    
+    // should be just expose a bunch of functionality here?
+    // Graphics stuff
+    void ClearDisplay( int color );
 
 private:
     void loop();
     callback_t      load_p;
     callback_f_t    update_p;
     callback_t      render_p;
+    Display         *display;
 };

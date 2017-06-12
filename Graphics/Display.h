@@ -1,5 +1,8 @@
+#pragma once
+
 #include "../Util/Types.h"
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 #include <string>
 
 class Display {
@@ -11,6 +14,7 @@ public:
     inline bool IsRunning() { return running; }
     inline void SetRunning( bool running ) { running = running; }
     inline void Close() { running = false; }
+    //virtual ~Display();
 
 private:
     bool running;
