@@ -10,6 +10,7 @@ public:
     Display( const int width, const int height, const std::string &title );
     void Update();
     // use hex number for color
+    void Clear();
     void SetClearColor( int color );
     inline bool IsRunning() { return running; }
     inline void SetRunning( bool running ) { running = running; }
