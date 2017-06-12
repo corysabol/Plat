@@ -10,8 +10,8 @@ void Game::loop() {
     while ( running && display->IsRunning() ) {
         // update the display
         display->Update();
-        update_p(0.0f);
-        render_p();
+        update( this, 0.0f );
+        render( this );
     }
 }
 
@@ -20,7 +20,7 @@ void Game::start() {
     display = new Display( 800, 600, "Test Game: Plat" );
     // call the load function to set up game stuff.
     // level, entities, etc. 
-    load_p();
+    load( this );
     // start the game loop
     loop();
 }

@@ -1,17 +1,18 @@
 #include "../Graphics/Display.h" 
 #include "../Util/Types.h"
+#include <functional>
 
 class Game {
 public:
     Game();
-    inline void setLoad( callback_t cb ) {
-        load_p = cb;
+    inline void setLoad( std::function<void(Game*)> cb ) {
+        load = cb;
     };
-    inline void setUpdate( callback_f_t cb ) {
-        update_p = cb;    
+    inline void setUpdate( std::function<void(Game*,float)> cb ) {
+        update = cb;    
     };
-    inline void setRender( callback_t cb ) {
-        render_p = cb;    
+    inline void setRender( std::function<void(Game*)> cb ) {
+        render = cb;    
     };
     void start();
     //virtual ~Game();
@@ -20,10 +21,12 @@ public:
     // Graphics stuff
     void ClearDisplay( int color );
 
+    inline Display* GetDisplay() { return this->display; };
+
 private:
     void loop();
-    callback_t      load_p;
-    callback_f_t    update_p;
-    callback_t      render_p;
-    Display         *display;
+    std::function<void(Game*)>       load;
+    std::function<void(Game*,float)> update;
+    std::function<void(Game*)>       render;
+    Display *display;
 };
