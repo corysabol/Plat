@@ -1,11 +1,11 @@
-#include "Game/Game.h"
-#include "Util/Types.h"
-#include "Plat/Player.h"
+#include "../Game/Game.h"
+#include "../Util/Types.h"
+#include "Player.h"
 #include <iostream>
 
 // This call back logic can be implemented into a Scene class
 // which must define these functions and then pass them to the 
-// Game instance to allow encapsulation of each scene/leve as it's 
+// Game instance to allow encapsulation of each scene/level as it's 
 // own set of states.
 
 int main () {
@@ -24,16 +24,23 @@ int main () {
     // The game object will pass itself into the callback funciton.
     // None of the callbacks should return anything.
     //
-    // NOTE: The game objec will be passed in using the 'this' keyword, which passes a pointer
+    // NOTE: The game object will be passed in using the 'this' keyword, which passes a pointer
     //       Therefore the lambdas defined here must take a Game * type as the first arg.
     Game g;
+
     g.setLoad( [=] ( Game *game ) {
     });
+
     g.setUpdate( [=] ( Game *game, float dt ) { 
     });
+
     g.setRender( [=] ( Game *game ) { 
+        game->GetDisplay()->Clear();
         game->GetDisplay()->SetClearColor( 0x00ff00ff );
     });
+
+    // This initializes the game subsystems and creates the window,
+    // calls the load callback and then starts the gameloop
     g.start();
 
     return 0;
