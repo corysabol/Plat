@@ -37,14 +37,14 @@ void Display::Update() {
 
 void Display::SetClearColor ( int color ) {
 
-    int r, g, b, a;
+    float r, g, b, a;
 
-    r = (float) ((color >> 24) & 0xff);
-    g = (float) ((color >> 16) & 0x00ff);
-    b = (float) ((color >> 8)  & 0x0000ff);
-    a = (float) ((color >> 0)  & 0x000000ff);
+    r = (float) ( (color >> 24 ) & 0xff);
+    g = (float) ( (color >> 16 ) & 0x00ff);
+    b = (float) ( (color >> 8 )  & 0x0000ff);
+    a = (float) ( (color >> 0 )  & 0x000000ff);
 
-    glClearColor( r/0xff, g/0xff, b/0xff, a/0xff );
+    glClearColor( r / 0xff, g / 0xff, b / 0xff, a / 0xff );
 
 }
 

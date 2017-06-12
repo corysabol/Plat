@@ -28,14 +28,11 @@ int main () {
     //       Therefore the lambdas defined here must take a Game * type as the first arg.
     Game g;
     g.setLoad( [=] ( Game *game ) {
-        std::cout << "loading..." << std::endl;
     });
     g.setUpdate( [=] ( Game *game, float dt ) { 
-        std::cout << "updating..." << std::endl;
     });
     g.setRender( [=] ( Game *game ) { 
-        std::cout << "rendering..." << std::endl;        
-        game->GetDisplay()->SetClearColor( 0x00000000 );
+        game->GetDisplay()->SetClearColor( 0x00ff00ff );
     });
     g.start();
 
