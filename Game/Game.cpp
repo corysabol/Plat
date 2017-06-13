@@ -1,26 +1,42 @@
 #include "Game.h"
 #include <iostream>
 
+#define MS_PER_FRAME 16 // the number of ms we have to do our processing each frame
+
 Game::Game() {
 }
 
-void Game::loop() {
+void Game::Loop() {
     // see the gameprogrammingpatterns book on game loops
     bool running = true;
-    while ( running && display->IsRunning() ) {
-        // update the display
-        display->Update();
+    // The optimized game loop
+    // locked to 60fps
+    // we can simply run the calculations then sleep until it's time to 
+    // loop again. 
+    //
+    // In the future we can also consider the more complex but arguably better
+    // technique of having a fixed timestep for updates and a variable step for rendering
+    // coupled with rendering extrapolation.
+    while ( display->IsRunning() ) {
+        Uint32 start = SDL_GetTicks(); // get the number of MS ellapsed since SDL started
+        input( this );
         update( this, 0.0f );
+        display->Update(); // double buffer the window
         render( this );
+
+        // wait til we need to update again, this is capped at 60fps but the game may slow down
+        // if it cannot run at 60fps.
+        std::cout << start + MS_PER_FRAME - SDL_GetTicks() << std::endl;
+        SDL_Delay( start + MS_PER_FRAME - SDL_GetTicks() );
     }
 }
 
-void Game::start() {
+void Game::Start() {
     // create the display and such first
     display = new Display( 800, 600, "Test Game: Plat" );
     // call the load function to set up game stuff.
     // level, entities, etc. 
     load( this );
     // start the game loop
-    loop();
+    Loop();
 }
