@@ -1,32 +1,38 @@
 #include "../Graphics/Display.h" 
 #include "../Util/Types.h"
+#include "Scene.h"
 #include <functional>
 
 class Game {
 public:
     Game();
-    inline void setLoad( std::function<void(Game*)> cb ) {
+    inline void OnLoad( std::function<void(Game*)> cb ) {
         load = cb;
     };
-    inline void setUpdate( std::function<void(Game*,float)> cb ) {
+    inline void OnInput( std::function<void(Game*)> cb ) {
+        input = cb;
+    }
+    inline void OnUpdate( std::function<void(Game*,float)> cb ) {
         update = cb;    
     };
-    inline void setRender( std::function<void(Game*)> cb ) {
+    inline void OnRender( std::function<void(Game*)> cb ) {
         render = cb;    
     };
-    void start();
+    void Start();
     //virtual ~Game();
     
-    // should be just expose a bunch of functionality here?
-    // Graphics stuff
-    void ClearDisplay( int color );
-
     inline Display* GetDisplay() { return this->display; };
 
 private:
-    void loop();
+    void Loop();
+    void Load();
+    void Input();
+    void Update();
+    void Render();
     std::function<void(Game*)>       load;
+    std::function<void(Game*)>       input;
     std::function<void(Game*,float)> update;
     std::function<void(Game*)>       render;
     Display *display;
+    Scene *scene;
 };

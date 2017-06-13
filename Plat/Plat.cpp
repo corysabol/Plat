@@ -28,20 +28,23 @@ int main () {
     //       Therefore the lambdas defined here must take a Game * type as the first arg.
     Game g;
 
-    g.setLoad( [=] ( Game *game ) {
+    g.OnLoad( [=] ( Game *game ) {
     });
 
-    g.setUpdate( [=] ( Game *game, float dt ) { 
+    g.OnInput( [=] ( Game *game ) {
     });
 
-    g.setRender( [=] ( Game *game ) { 
+    g.OnUpdate( [=] ( Game *game, float dt ) { 
+    });
+
+    g.OnRender( [=] ( Game *game ) { 
         game->GetDisplay()->Clear();
         game->GetDisplay()->SetClearColor( 0x00ff00ff );
     });
 
     // This initializes the game subsystems and creates the window,
     // calls the load callback and then starts the gameloop
-    g.start();
+    g.Start();
 
     return 0;
 }
