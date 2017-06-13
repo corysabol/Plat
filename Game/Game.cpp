@@ -1,5 +1,8 @@
 #include "Game.h"
+#include "Renderer.h"
 #include <iostream>
+#include <SDL2/SDL.h>
+#include <GL/glew.h>
 
 #define MS_PER_FRAME 16 // the number of ms we have to do our processing each frame
 
@@ -18,17 +21,49 @@ void Game::Loop() {
     // technique of having a fixed timestep for updates and a variable step for rendering
     // coupled with rendering extrapolation.
     while ( display->IsRunning() ) {
+        // Should use SDL_GetPerformanceFrequeny and SDL_GetPerformanceTicks
         Uint32 start = SDL_GetTicks(); // get the number of MS ellapsed since SDL started
-        input( this );
-        update( this, 0.0f );
-        display->Update(); // double buffer the window
-        render( this );
+        this->Input();
+        this->Update();
+        this->Render();
 
         // wait til we need to update again, this is capped at 60fps but the game may slow down
         // if it cannot run at 60fps.
-        std::cout << start + MS_PER_FRAME - SDL_GetTicks() << std::endl;
+        Uint32 elapsed = start + MS_PER_FRAME - SDL_GetTicks();
+        std::cout << "Elapsed: " << elapsed << std::endl;
         SDL_Delay( start + MS_PER_FRAME - SDL_GetTicks() );
     }
+}
+
+void Game::Load() {
+    // preliminary work
+
+    // call the load callback
+    load( this );
+}
+
+void Game::Input() {
+    // preliminary work
+    
+    // call the input callback
+    input( this );
+}
+
+void Game::Update() {
+    // preliminary work
+
+    // call the update callback
+    GLfloat dt = 0.0f;
+    update( this, dt );
+}
+
+void Game::Render() {
+    // preliminary work
+    
+    // call the render callback
+    render( this );
+    // double buffer the window
+    this->display->Update();
 }
 
 void Game::Start() {
@@ -36,7 +71,7 @@ void Game::Start() {
     display = new Display( 800, 600, "Test Game: Plat" );
     // call the load function to set up game stuff.
     // level, entities, etc. 
-    load( this );
+    this->Load();
     // start the game loop
     Loop();
 }

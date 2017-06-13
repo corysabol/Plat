@@ -1,5 +1,6 @@
 #include "../Graphics/Display.h" 
 #include "../Util/Types.h"
+#include "Scene.h"
 #include <functional>
 
 class Game {
@@ -24,9 +25,14 @@ public:
 
 private:
     void Loop();
+    void Load();
+    void Input();
+    void Update();
+    void Render();
     std::function<void(Game*)>       load;
     std::function<void(Game*)>       input;
     std::function<void(Game*,float)> update;
     std::function<void(Game*)>       render;
     Display *display;
+    Scene *scene;
 };
