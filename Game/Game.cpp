@@ -1,10 +1,14 @@
 #include "Game.h"
-#include "Renderer.h"
+#include "../Graphics/Renderer.h"
+#include "../Util/LTimer.h"
 #include <iostream>
+#include <sstream>
 #include <SDL2/SDL.h>
 #include <GL/glew.h>
 
-#define MS_PER_FRAME 16 // the number of ms we have to do our processing each frame
+
+const int SCREEN_FPS = 60;
+const int MS_PER_FRAME = 1000/SCREEN_FPS;
 
 Game::Game() {
 }
@@ -20,18 +24,40 @@ void Game::Loop() {
     // In the future we can also consider the more complex but arguably better
     // technique of having a fixed timestep for updates and a variable step for rendering
     // coupled with rendering extrapolation.
-    while ( display->IsRunning() ) {
-        // Should use SDL_GetPerformanceFrequeny and SDL_GetPerformanceTicks
-        Uint32 start = SDL_GetTicks(); // get the number of MS ellapsed since SDL started
-        this->Input();
-        this->Update();
-        this->Render();
+    LTimer fpsTimer;
+    LTimer capTimer;
+    std::stringstream timeText;
 
-        // wait til we need to update again, this is capped at 60fps but the game may slow down
-        // if it cannot run at 60fps.
-        Uint32 elapsed = start + MS_PER_FRAME - SDL_GetTicks();
-        std::cout << "Elapsed: " << elapsed << std::endl;
-        SDL_Delay( start + MS_PER_FRAME - SDL_GetTicks() );
+    int countedFrames = 0;
+    fpsTimer.start();
+    while ( display->IsRunning() ) {
+        // Start cap timer
+        capTimer.start();
+
+        this->Input();
+
+        // Calculate and correct fps
+        float avgFPS = countedFrames / ( fpsTimer.getTicks() / 1000.f );
+        if ( avgFPS > 2000000 ) {
+            avgFPS = 0;        
+        }
+
+        // Set text to be rendered
+        timeText.str( "" );
+        timeText << "Average FPS (w/ cap) " << avgFPS;
+        std::cout << timeText.str() << std::endl;
+
+        this->Update();
+
+        this->Render();
+        ++countedFrames;
+
+        // If frame finished early
+        int frameTicks = capTimer.getTicks();
+        if ( frameTicks < MS_PER_FRAME ) {
+            // wait remaining time
+            SDL_Delay( MS_PER_FRAME - frameTicks );
+        }
     }
 }
 
